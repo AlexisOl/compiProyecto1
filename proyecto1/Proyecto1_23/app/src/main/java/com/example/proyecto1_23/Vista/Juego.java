@@ -1,7 +1,8 @@
 package com.example.proyecto1_23.Vista;
 import java.io.StringReader;
-
+import com.example.proyecto1_23.Ocurrencias.operadoresMatematicos;
 import com.example.proyecto1_23.Ocurrencias.movimientoObjetos;
+import com.example.proyecto1_23.Ocurrencias.operadoresMatematicos;
 import  com.example.proyecto1_23.Parser.*;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyecto1_23.R;
+import com.example.proyecto1_23.Reportes.ReporteTablasOcurrencia;
+import com.example.proyecto1_23.Reportes.paginaReportesOcurrencias;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -57,9 +60,6 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
 
 
     FrameLayout game;
-    Button pause;
-    TextView score;
-    Button difficultyToggle;
     Handler handler;
     Runnable loop;
     int delayFactor;
@@ -76,7 +76,11 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
 
 
     //ELEMENTOS MOVIMIENTOS FINALES
+    private int contadorHilo;
     private ArrayList<movimientoObjetos> movimientosHilo = new ArrayList<>();
+    public static ArrayList<movimientoObjetos> listaEjecuciones = new ArrayList<>();
+    public static ArrayList<operadoresMatematicos> operadoresMatematicos = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,18 +124,7 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
         SendInfo.setText(R.string.sendInfo);
         SendInfo.setId(R.id.sendInfo);
 
-        pause = new Button(this);
-        pause.setText(R.string.pause);
-        pause.setId(R.id.pause);
 
-        score = new TextView(this);
-        score.setText(R.string.score);
-        score.setId(R.id.score);
-        score.setTextSize(30);
-
-        difficultyToggle = new Button(this);
-        difficultyToggle.setText(R.string.easy);
-        difficultyToggle.setId(R.id.difficulty);
 
 
         //areas de texto
@@ -149,9 +142,6 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
         RelativeLayout.LayoutParams downRealButton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams areaTextLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout.LayoutParams sendInfoButon = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams pausebutton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams scoretext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        RelativeLayout.LayoutParams speedbutton = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         gameButtons.setLayoutParams(rl);
         gameButtons.addView(left);
@@ -160,12 +150,8 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
         gameButtons.addView(down);
         gameButtons.addView(textAreaSpecific);
         //----------------------------
-        //gameTextArea.setLayoutParams(rl2);
-        //gameTextArea.addView(textAreaSpecific);
+
         gameButtons.addView(SendInfo);
-       // gameButtons.addView(pause);
-        //gameButtons.addView(score);
-        //gameButtons.addView(difficultyToggle);
 
         //----------------------------------------------------------------------------------
 
@@ -188,18 +174,10 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
         sendInfoButon.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         sendInfoButon.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
 
-      //  pausebutton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-      //  pausebutton.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-
-      //  scoretext.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-       // scoretext.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-
-        //  speedbutton.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        // speedbutton.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 
         //----------------------------------------------------------------------------------
-        left.setLayoutParams(leftButton);
-        right.setLayoutParams(rightButton);
+       // left.setLayoutParams(leftButton);
+       // right.setLayoutParams(rightButton);
         up.setLayoutParams(upButton);
         down.setLayoutParams(downRealButton);
         SendInfo.setLayoutParams(sendInfoButon);
@@ -227,17 +205,6 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
         View sendInfoListener = findViewById(R.id.sendInfo);
         sendInfoListener.setOnClickListener(this);
         //----------------------------------------------------
-     //   View textAreaListerner = findViewById(R.id.textArea);
-
-       // View rotateACButtonListener = findViewById(R.id.rotate_ac);
-        //rotateACButtonListener.setOnClickListener(this);
-
-      //  View pauseButtonListener = findViewById(R.id.pause);
-        //pauseButtonListener.setOnClickListener(this);
-
-       // View speedButtonListener = findViewById(R.id.difficulty);
-      //  speedButtonListener.setOnClickListener(this);
-
 
         // metodo para determinar el flujo del moviminento
         handler = new Handler(Looper.getMainLooper());
@@ -255,7 +222,7 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
 
 
                             //vreacion de paredes
-                            FiguraGeneral tetramnino1 = new FiguraGeneral(TipoFiguraGeneral.HALLS, 8000);
+                            FiguraGeneral tetramnino1 = new FiguraGeneral(TipoFiguraGeneral.SQUARE_SHAPED, 8000);
                             Coordenada coordenas1 = new Coordenada(1, 10 );
 
                             //forma de pintar
@@ -282,8 +249,6 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
                     } else {
                         handler.postDelayed(this, delay);
                     }
-                } else {
-                    pause.setText(R.string.start_new_game);
                 }
             }
 
@@ -296,10 +261,26 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
             public void onClick(View view) {
 
                 try {
-                   // runAnaly();
+                    analizar();
                     //textAreaSpecific.setText("");
-                    ingresoMoviminetos();
+                    movimientosFInalesObjetos(movimientosHilo, contadorHilo);
+                    //ingresoMoviminetos();
                     moviminetosPruba.clear();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+                    Intent intent = new Intent(Juego.this, paginaReportesOcurrencias.class);
+                    //textarea
+                    startActivity(intent);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -309,23 +290,29 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
     }
 
     //analisis
-    public void runAnaly() throws Exception {
-            System.out.println("analyze"+ "iniciando el analise");
+    public void analizar() throws Exception {
             lexer lexema = new lexer(new StringReader(textAreaSpecific.getText().toString()));
-            parser sintac = new parser(lexema);
-            sintac.parse();
+            parser Parser = new parser(lexema);
+        Parser.parse();
             try {
                 System.out.println("prueba");
-                for (int i =0; i < sintac.getListaMovimientos().size(); i++) {
-                    double valoresMovimiento = sintac.getListaCantidadMovimientos().get(i);
-                    movimientosHilo.add(new movimientoObjetos(sintac.getListaMovimientos().get(i),valoresMovimiento));
-                    moviminetosPruba.add(movimientosHilo.get(i));
+                for (int i =0; i < Parser.getListaMovimientos().size(); i++) {
+                    double valoresMovimiento = Parser.getListaCantidadMovimientos().get(i);
+                    movimientosHilo.add(new movimientoObjetos(Parser.getListaMovimientos().get(i),valoresMovimiento));
+                    listaEjecuciones.add(new movimientoObjetos(Parser.getListaMovimientos().get(i),Parser.getfilasLista().get(i),Parser.getcolumnasLista().get(i)));
+
+                        operadoresMatematicos.add(new operadoresMatematicos(Parser.getoperadorMatematico().get(i), Parser.getfilasListaMatematico().get(i), Parser.getcolumnasListaMatematico().get(i)));
+
+                    //moviminetosPruba.add(movimientosHilo.get(i));
                    // System.out.println("tipo:"+sintac.getListMoveGame().get(i).getTipo());
                     //System.out.println("fila:"+sintac.getListMoveGame().get(i).getFila()+"columna:"+sintac.getListMoveGame().get(i).getColumna());
                 }
-                for (int i = 0; i <sintac.getListaMovimientos().size(); i++) {
-                    System.out.println("tipo:"+sintac.getListaMovimientos().get(i));
-                    System.out.println("tipo:"+sintac.getListaCantidadMovimientos().get(i));
+                contadorHilo=Parser.getListaMovimientos().size();
+
+                //-----------------------------------------------
+                for (int i = 0; i <Parser.getListaMovimientos().size(); i++) {
+                    System.out.println("tipo:"+Parser.getListaMovimientos().get(i));
+                    System.out.println("tipo:"+Parser.getListaCantidadMovimientos().get(i));
                 }
             } catch (Exception e ){
                 e.printStackTrace();
@@ -344,9 +331,9 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
     //    nombreValoresLista.add(2.0);
         //nombreTiposLista.add(new String("down"));
         nombreTiposLista.add("right");
-        moviminetosPruba.add(new movimientoObjetos("down", 1.0));
+       // moviminetosPruba.add(new movimientoObjetos("down", 1.0));
         //  tipoIngreso =  new movimientoObjetos("right", 2);
-        moviminetosPruba.add(new movimientoObjetos("right", 2.0));
+       // moviminetosPruba.add(new movimientoObjetos("right", 2.0));
         movimientoObjetos(moviminetosPruba);
         //movimientosFInalesObjetos( nombreTiposLista, nombreValoresLista);
        // movimientosFInalesObjetosDefinitivo("down", 3.0);
@@ -403,35 +390,35 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
     }
 
     //metodo para generar el movimiento de los objetos -------------------------------------
-    public void movimientosFInalesObjetos(ArrayList<String> tipo, ArrayList<Double> valor) {
+    public void movimientosFInalesObjetos(ArrayList<movimientoObjetos> movimientos, int limite) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i =0 ; i < tipo.size(); i++){
+                for (int i =movimientos.size()-limite ; i < movimientos.size(); i++){
                     try {
-                        switch (tipo.get(i)) {
+                        switch (movimientos.get(i).getTipo()) {
                             case "up":
                                 // ahora la cantidad de veces que se repite
-                                for (int j =0 ;j < valor.size(); j++) {
+                                for (int j =0 ;j < movimientos.get(i).getValor(); j++) {
                                     gameState.moveFallingTetraminoUp();
                                     Thread.sleep(1000);
                                 }
                                 break;
                             case "down":
-                                for (int j =0 ; j < valor.size(); j++) {
+                                for (int j =0 ;j < movimientos.get(i).getValor(); j++) {
                                     gameState.moveFallingTetraminoDown();
                                     Thread.sleep(1000);
 
                                 }
                                 break;
                             case "left":
-                                for (int j =0 ; j <valor.size(); j++) {
+                                for (int j =0 ;j < movimientos.get(i).getValor(); j++) {
                                     gameState.moveFallingTetraminoLeft();
                                     Thread.sleep(1000);
                                 }
                                 break;
                             case "right":
-                                for (int j =0 ; j < valor.size(); j++) {
+                                for (int j =0 ;j < movimientos.get(i).getValor(); j++) {
                                     gameState.moveFallingTetraminoRight();
                                     Thread.sleep(1000);
                                 }
@@ -446,6 +433,49 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
         }).start();
     }
     public void movimientoObjetos(ArrayList<movimientoObjetos> movimientos) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (movimientoObjetos todosMovimientos: movimientos) {
+                    try {
+                        switch (todosMovimientos.getTipo()) {
+                            case "up":
+                                // ahora la cantidad de veces que se repite
+                                for (int i =0 ; i < todosMovimientos.getValor(); i++) {
+                                    gameState.moveFallingTetraminoUp();
+                                    Thread.sleep(1000);
+                                }
+                                break;
+                            case "down":
+                                for (int i =0 ; i < todosMovimientos.getValor(); i++) {
+                                    gameState.moveFallingTetraminoDown();
+                                    Thread.sleep(1000);
+
+                                }
+                                break;
+                            case "left":
+                                for (int i =0 ; i < todosMovimientos.getValor(); i++) {
+                                    gameState.moveFallingTetraminoLeft();
+                                    Thread.sleep(1000);
+                                }
+                                break;
+                            case "right":
+                                for (int i =0 ; i < todosMovimientos.getValor(); i++) {
+                                    gameState.moveFallingTetraminoRight();
+                                    Thread.sleep(1000);
+                                }
+                                break;
+                        }
+                    }catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }).start();
+    }
+
+    public void movimientoObjetosFinal(ArrayList<movimientoObjetos> movimientos, int limite) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -511,8 +541,6 @@ public class Juego extends AppCompatActivity implements View.OnClickListener {
             moviminetosPruba.add(new movimientoObjetos("right", 5.0));
             movimientoObjetos(moviminetosPruba);
 
-        } else if (action == down) {
-            gameState.moveFallingTetraminoDown();
         }
 
     }

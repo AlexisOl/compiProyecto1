@@ -14,12 +14,7 @@ public class FiguraGeneral {
                 };
                 blocks = this.blocksGenerator(tetraId, 3, coordinates);
                 break;
-            case HALLS:
-                coordinates = new Coordenada[] {
-                        new Coordenada(0, 2)
-                };
-                blocks = this.blocksGenerator(tetraId, 5, coordinates);
-                break;
+
             case SQUARE_SHAPED:
                 coordinates = new Coordenada[]{
                         new Coordenada(0, 10),

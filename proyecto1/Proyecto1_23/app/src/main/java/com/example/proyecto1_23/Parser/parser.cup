@@ -25,6 +25,11 @@ parser code
       private ArrayList<Integer> filasLista= new ArrayList<>();
 
 
+
+       private ArrayList<String> operadorMatematico= new ArrayList<>();
+          private ArrayList<Integer> columnasListaMatematico= new ArrayList<>();
+          private ArrayList<Integer> filasListaMatematico= new ArrayList<>();
+
       public ArrayList<String> getListaMovimientos(){
           return this.tipoMovimientoLista;
       }
@@ -38,7 +43,15 @@ parser code
       public ArrayList<Integer> getfilasLista(){
                         return this.filasLista;
       }
-
+    public ArrayList<String> getoperadorMatematico(){
+                       return this.operadorMatematico;
+          }
+     public ArrayList<Integer> getcolumnasListaMatematico(){
+                       return this.columnasListaMatematico;
+          }
+          public ArrayList<Integer> getfilasListaMatematico(){
+                            return this.filasListaMatematico;
+          }
 
 
       public ArrayList<movimientoObjetos> getListMoveGame(){
@@ -128,25 +141,59 @@ expresionIndividual::=
 ;
 
 expresiones::=
-    expresionIndividual:n {: RESULT = n; :}
+    expresionIndividual:n {:
+
+    operadorMatematico.add(String.valueOf("numero") );
+                             columnasListaMatematico.add(nright);
+                             filasListaMatematico.add(nleft);
+    RESULT = n;
+
+                         :}
         | expresiones:e1 SUMA:o expresiones:e2
-                    {: RESULT = e1 + e2;:}
+                    {:
+                     operadorMatematico.add(String.valueOf("suma") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 + e2;:}
         |expresiones:e1 RESTA:o expresiones:e2
-                    {: RESULT = e1 - e2;:}
+                    {:
+                     operadorMatematico.add(String.valueOf("resta") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 - e2;:}
         | expresiones:e1 MULTIPLICACION:o expresiones:e2
-                    {: RESULT = e1 * e2;:}
+                    {:
+                     operadorMatematico.add(String.valueOf("multiplicacion") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 * e2;:}
         |  expresiones:e1 DIVISION:o expresiones:e2
-                    {: RESULT = e1 / e2;:}
-        | RESTA expresiones:e1
-                {:RESULT = Double.valueOf(-e1);:}
+                    {:
+                     operadorMatematico.add(String.valueOf("division") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 / e2;:}
+        | RESTA:e2 expresiones:e1
+                {:  operadorMatematico.add(String.valueOf("negativo") );
+                                        columnasListaMatematico.add(e2right);
+                                        filasListaMatematico.add(e2left);
+                RESULT = Double.valueOf(-e1);:}
         | PARENTESISABIERTO expresiones:e PARENTESISCERRADO
                     {:RESULT = e;:}
          | funcionesAproximacion:funciones
          {:RESULT = funciones;:}
 ;
 funcionesAproximacion::=
-                 FLOOR PARENTESISABIERTO expresiones:e PARENTESISCERRADO
-                    {:RESULT = Math.floor(e);:}
-                | CEIL PARENTESISABIERTO expresiones:e PARENTESISCERRADO
-                    {:RESULT = Math.ceil(e);:}
+                 FLOOR:o PARENTESISABIERTO expresiones:e PARENTESISCERRADO
+                    {:
+                    operadorMatematico.add(String.valueOf("floor") );
+                                                   columnasListaMatematico.add(oright);
+                                                   filasListaMatematico.add(oleft);
+                    RESULT = Math.floor(e);:}
+                | CEIL:o PARENTESISABIERTO expresiones:e PARENTESISCERRADO
+                    {:
+                     operadorMatematico.add(String.valueOf("ceil") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = Math.ceil(e);:}
             ;

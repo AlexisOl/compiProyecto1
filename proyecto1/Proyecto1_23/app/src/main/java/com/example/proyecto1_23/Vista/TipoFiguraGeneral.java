@@ -4,14 +4,7 @@ import java.util.Random;
 
 public enum TipoFiguraGeneral {
     ONLYSQUARE,
-    SQUARE_SHAPED,
-    T_SHAPED,
-    L_SHAPED,
-    LINE_SHAPED,
-    Z_SHAPED,
-    INV_L_SHAPED,
-    HALLS,
-    INV_Z_SHAPED;
+    SQUARE_SHAPED;
 
     private static final TipoFiguraGeneral[] VALUES = values();
     private static final int SIZE = VALUES.length;

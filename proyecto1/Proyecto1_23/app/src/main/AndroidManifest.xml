@@ -22,5 +22,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Vista.Juego"></activity>
+        <activity android:name=".Reportes.ReporteTablasOcurrencia"></activity>
+        <activity android:name=".Reportes.ReporteCantidadOcurrencias"></activity>
+        <activity android:name=".Reportes.paginaReportesOcurrencias"></activity>
+        <activity android:name=".Reportes.paginaReporteMatematico"></activity>
+
     </application>
 </manifest>

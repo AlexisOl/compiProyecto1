@@ -1,22 +1,16 @@
 package com.example.proyecto1_23.Ocurrencias;
 
-
-import java.io.Serializable;
-
-public class OcurrenciasForma implements Serializable {
-
+public class operadoresMatematicos {
     private String operador;
-    private int linea;
+    private int fila;
     private int columna;
 
-    public OcurrenciasForma(String operador, int linea, int columna) {
+    public operadoresMatematicos(){}
+    public operadoresMatematicos(String operador, int fila, int columna) {
         this.operador = operador;
-        this.linea = linea;
+        this.fila = fila;
         this.columna = columna;
     }
-
-
-    public OcurrenciasForma(){    }
 
     public String getOperador() {
         return operador;
@@ -26,18 +20,19 @@ public class OcurrenciasForma implements Serializable {
         this.operador = operador;
     }
 
-    public int getLinea() {
-        return linea;
+    public int getFila() {
+        return fila;
     }
-    public void setLinea(int linea) {
-        this.linea = linea;
+
+    public void setFila(int fila) {
+        this.fila = fila;
     }
 
     public int getColumna() {
         return columna;
     }
+
     public void setColumna(int columna) {
         this.columna = columna;
     }
-
 }

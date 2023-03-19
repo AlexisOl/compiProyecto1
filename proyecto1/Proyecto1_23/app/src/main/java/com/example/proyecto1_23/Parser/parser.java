@@ -168,6 +168,11 @@ public class parser extends java_cup.runtime.lr_parser {
       private ArrayList<Integer> filasLista= new ArrayList<>();
 
 
+
+       private ArrayList<String> operadorMatematico= new ArrayList<>();
+          private ArrayList<Integer> columnasListaMatematico= new ArrayList<>();
+          private ArrayList<Integer> filasListaMatematico= new ArrayList<>();
+
       public ArrayList<String> getListaMovimientos(){
           return this.tipoMovimientoLista;
       }
@@ -181,7 +186,15 @@ public class parser extends java_cup.runtime.lr_parser {
       public ArrayList<Integer> getfilasLista(){
                         return this.filasLista;
       }
-
+    public ArrayList<String> getoperadorMatematico(){
+                       return this.operadorMatematico;
+          }
+     public ArrayList<Integer> getcolumnasListaMatematico(){
+                       return this.columnasListaMatematico;
+          }
+          public ArrayList<Integer> getfilasListaMatematico(){
+                            return this.filasListaMatematico;
+          }
 
 
       public ArrayList<movimientoObjetos> getListMoveGame(){
@@ -383,7 +396,14 @@ class CUP$parser$actions {
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Double n = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = n; 
+		
+
+    operadorMatematico.add(String.valueOf("numero") );
+                             columnasListaMatematico.add(nright);
+                             filasListaMatematico.add(nleft);
+    RESULT = n;
+
+                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresiones",4, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -401,7 +421,11 @@ class CUP$parser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Double e2 = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = e1 + e2;
+		
+                     operadorMatematico.add(String.valueOf("suma") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 + e2;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresiones",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -419,7 +443,11 @@ class CUP$parser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Double e2 = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = e1 - e2;
+		
+                     operadorMatematico.add(String.valueOf("resta") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 - e2;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresiones",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -437,7 +465,11 @@ class CUP$parser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Double e2 = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = e1 * e2;
+		
+                     operadorMatematico.add(String.valueOf("multiplicacion") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 * e2;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresiones",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -455,7 +487,11 @@ class CUP$parser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Double e2 = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = e1 / e2;
+		
+                     operadorMatematico.add(String.valueOf("division") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = e1 / e2;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresiones",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -464,10 +500,16 @@ class CUP$parser$actions {
           case 17: // expresiones ::= RESTA expresiones 
             {
               Double RESULT =null;
+		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Double e1 = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		RESULT = Double.valueOf(-e1);
+		  operadorMatematico.add(String.valueOf("negativo") );
+                                        columnasListaMatematico.add(e2right);
+                                        filasListaMatematico.add(e2left);
+                RESULT = Double.valueOf(-e1);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresiones",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -500,10 +542,17 @@ class CUP$parser$actions {
           case 20: // funcionesAproximacion ::= FLOOR PARENTESISABIERTO expresiones PARENTESISCERRADO 
             {
               Double RESULT =null;
+		int oleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
+		int oright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
+		Object o = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Double e = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		RESULT = Math.floor(e);
+		
+                    operadorMatematico.add(String.valueOf("floor") );
+                                                   columnasListaMatematico.add(oright);
+                                                   filasListaMatematico.add(oleft);
+                    RESULT = Math.floor(e);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("funcionesAproximacion",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -512,10 +561,17 @@ class CUP$parser$actions {
           case 21: // funcionesAproximacion ::= CEIL PARENTESISABIERTO expresiones PARENTESISCERRADO 
             {
               Double RESULT =null;
+		int oleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
+		int oright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
+		Object o = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Double e = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		RESULT = Math.ceil(e);
+		
+                     operadorMatematico.add(String.valueOf("ceil") );
+                     columnasListaMatematico.add(oright);
+                     filasListaMatematico.add(oleft);
+                    RESULT = Math.ceil(e);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("funcionesAproximacion",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
