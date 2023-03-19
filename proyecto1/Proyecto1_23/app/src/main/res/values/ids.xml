@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="left" type="id" />
+    <item name="right" type="id" />
+    <item name="up" type="id" />
+    <item name="down" type="id" />
+    <item name="sendInfo" type="id" />
+    <item name="pause" type="id" />
+    <item name="score" type="id" />
+    <item name="difficulty" type="id" />
+    <item name="textArea" type="id" />
+</resources>

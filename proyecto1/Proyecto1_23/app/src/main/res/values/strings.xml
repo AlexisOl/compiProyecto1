@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Proyecto1_23</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="start_new_game">Start New Game</string>
+    <string name="easy">Easy Mode</string>
+    <string name="hard">Hard Mode</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="up">Up</string>
+    <string name="down">Down</string>
+    <string name="sendInfo">Enviar Texto.</string>
+    <string name="score">Score</string>
+    <string name="game_over">Game Over</string>
+    <string name="ingrese_Texto">INgrese textor</string>
+
+</resources>

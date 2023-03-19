@@ -1,0 +1,12 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation fileTree(dir: '/home/alexis/Documentos/TAREAS--USAC/Compi1/practica1/GraficadorCompi1/Practica1_AlexisOvalle/app', include: ['*.aar', '*.jar'], exclude: [])
+}
